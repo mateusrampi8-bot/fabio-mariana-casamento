@@ -1,6 +1,7 @@
 import { BookOpen, CalendarDays, GraduationCap, Heart, Image as ImageIcon, Music2, Star, Trophy } from "lucide-react";
 import { Nav } from "../components";
 import { fallbackMariana, marianaImage } from "../data";
+import MarianaMusicPlayer from "./MarianaMusicPlayer";
 
 const timeline = [
   { label: "Nascimento", icon: Heart },
@@ -54,17 +55,19 @@ export default function Mariana() {
                 { label: "Galeria", icon: ImageIcon },
                 { label: "Linha do Tempo", icon: CalendarDays }
               ].map((item) => (
-                <button key={item.label} className="flex h-14 items-center justify-center gap-4 rounded-full border border-rose/45 bg-white/35 px-6 text-xs font-semibold uppercase tracking-[0.22em] text-rose transition hover:bg-rose hover:text-white">
+                <a key={item.label} href={item.label === "Playlist da Mariana" ? "#playlist" : "#timeline"} className="flex h-14 items-center justify-center gap-4 rounded-full border border-rose/45 bg-white/35 px-6 text-xs font-semibold uppercase tracking-[0.22em] text-rose transition hover:bg-rose hover:text-white">
                   <item.icon size={18} />
                   {item.label}
-                </button>
+                </a>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#bd6470] via-[#d27982] to-[#c46470] px-6 py-14 text-white">
+      <MarianaMusicPlayer />
+
+      <section id="timeline" className="relative overflow-hidden bg-gradient-to-r from-[#bd6470] via-[#d27982] to-[#c46470] px-6 py-14 text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(255,255,255,.16),transparent_30%),radial-gradient(circle_at_80%_80%,rgba(212,175,106,.18),transparent_28%)]" />
         <div className="relative mx-auto max-w-7xl">
           <h2 className="text-center font-serif text-3xl uppercase tracking-[0.22em] text-[#f5e3dc]">Linha do Tempo</h2>
