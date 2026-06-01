@@ -1,4 +1,4 @@
-import { BookOpen, CalendarDays, GraduationCap, Heart, Image as ImageIcon, Music2, Star, Trophy } from "lucide-react";
+import { BookOpen, GraduationCap, Heart, Star, Trophy } from "lucide-react";
 import { Nav } from "../components";
 import { fallbackMariana, marianaImage } from "../data";
 import MarianaMusicPlayer from "./MarianaMusicPlayer";
@@ -47,19 +47,6 @@ export default function Mariana() {
               <p>
                 Hoje, está realizando um dos maiores sonhos de sua vida: casar com o amor da sua vida.
               </p>
-            </div>
-
-            <div className="mt-9 grid gap-4">
-              {[
-                { label: "Playlist da Mariana", icon: Music2 },
-                { label: "Galeria", icon: ImageIcon },
-                { label: "Linha do Tempo", icon: CalendarDays }
-              ].map((item) => (
-                <a key={item.label} href={item.label === "Playlist da Mariana" ? "#playlist" : item.label === "Galeria" ? "#album-mariana" : "#timeline"} className="flex h-14 items-center justify-center gap-4 rounded-full border border-rose/45 bg-white/35 px-6 text-xs font-semibold uppercase tracking-[0.22em] text-rose transition hover:bg-rose hover:text-white">
-                  <item.icon size={18} />
-                  {item.label}
-                </a>
-              ))}
             </div>
           </div>
         </div>
