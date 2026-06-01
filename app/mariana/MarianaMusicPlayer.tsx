@@ -17,12 +17,12 @@ const playlist = [
 ];
 
 const album = [
-  { title: "Sorriso de Mariana", src: "/images/mariana-album-01.png" },
-  { title: "Detalhes em rosa", src: "/images/mariana-album-02.png" },
-  { title: "Sonhos", src: "/images/mariana-album-03.png" },
-  { title: "Flores e luz", src: "/images/mariana-album-04.png" },
-  { title: "Memorias", src: "/images/mariana-album-05.png" },
-  { title: "Antes do sim", src: "/images/mariana-album-06.png" }
+  { title: "Sorriso de Mariana", src: "/images/mariana/album-01.png" },
+  { title: "Detalhes em rosa", src: "/images/mariana/album-02.png" },
+  { title: "Sonhos", src: "/images/mariana/album-03.png" },
+  { title: "Flores e luz", src: "/images/mariana/album-04.png" },
+  { title: "Memorias", src: "/images/mariana/album-05.png" },
+  { title: "Antes do sim", src: "/images/mariana/album-06.png" }
 ];
 
 export default function MarianaMusicPlayer() {
@@ -138,7 +138,7 @@ export default function MarianaMusicPlayer() {
                 className={`group relative overflow-hidden rounded-lg bg-cover bg-center shadow-soft ${
                   index === 0 || index === 5 ? "row-span-2" : ""
                 }`}
-                style={{ backgroundImage: `url(${photo.src}), url(/images/mariana.png)` }}
+                style={{ backgroundImage: `url(${photo.src}), url(/images/mariana/principal.png)` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/45 via-transparent to-transparent opacity-75 transition group-hover:opacity-95" />
                 <p className="absolute bottom-4 left-4 right-4 font-serif text-xl text-white drop-shadow">{photo.title}</p>
