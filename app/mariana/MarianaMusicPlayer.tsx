@@ -103,7 +103,7 @@ export default function MarianaMusicPlayer() {
               </div>
             </div>
 
-            <div className="max-h-96 space-y-2 overflow-auto pr-2">
+            <div className="space-y-2">
               {playlist.map((item, index) => (
                 <button
                   key={item.src}

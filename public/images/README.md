@@ -12,3 +12,16 @@ Sugestao de nomes:
 - `recado-01.jpg` ate `recado-04.jpg`
 
 Depois, troque os valores do objeto `images` e da lista `gallery` para caminhos como `/images/hero-casal.jpg`.
+
+## Fotos da Mariana
+
+Coloque o album da Mariana nesta mesma pasta (`public/images`) com estes nomes:
+
+- `mariana-album-01.png`
+- `mariana-album-02.png`
+- `mariana-album-03.png`
+- `mariana-album-04.png`
+- `mariana-album-05.png`
+- `mariana-album-06.png`
+
+Tambem pode usar `.jpg`, mas se usar outra extensao avise para eu ajustar o codigo.
