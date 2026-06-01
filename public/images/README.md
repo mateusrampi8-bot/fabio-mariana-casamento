@@ -3,7 +3,7 @@ Coloque aqui as fotos reais anexadas pelo casal para substituir os links remotos
 Sugestao de nomes:
 
 - `capa-casal.jpg` para a primeira tela com a contagem regressiva
-- `mariana.jpg`
+- `mariana.png`
 - `fabio.jpg`
 - `nossa-historia.jpg`
 - `rodape-casal.jpg`

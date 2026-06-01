@@ -58,7 +58,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <a href="/sobre-nos" className="mt-9 rounded-full bg-gradient-to-r from-[#eed18a] to-[#d4af37] px-9 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-navy shadow-gold transition hover:translate-y-[-2px]">
+          <a href="/mariana" className="mt-9 rounded-full bg-gradient-to-r from-[#eed18a] to-[#d4af37] px-9 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-navy shadow-gold transition hover:translate-y-[-2px]">
             Entrar no site
           </a>
           <ChevronDown className="absolute bottom-8 text-champagne" size={38} />
