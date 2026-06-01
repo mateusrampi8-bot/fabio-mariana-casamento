@@ -55,7 +55,7 @@ export default function Mariana() {
                 { label: "Galeria", icon: ImageIcon },
                 { label: "Linha do Tempo", icon: CalendarDays }
               ].map((item) => (
-                <a key={item.label} href={item.label === "Playlist da Mariana" ? "#playlist" : "#timeline"} className="flex h-14 items-center justify-center gap-4 rounded-full border border-rose/45 bg-white/35 px-6 text-xs font-semibold uppercase tracking-[0.22em] text-rose transition hover:bg-rose hover:text-white">
+                <a key={item.label} href={item.label === "Playlist da Mariana" ? "#playlist" : item.label === "Galeria" ? "#album-mariana" : "#timeline"} className="flex h-14 items-center justify-center gap-4 rounded-full border border-rose/45 bg-white/35 px-6 text-xs font-semibold uppercase tracking-[0.22em] text-rose transition hover:bg-rose hover:text-white">
                   <item.icon size={18} />
                   {item.label}
                 </a>

@@ -4,6 +4,7 @@ Sugestao de nomes:
 
 - `capa-casal.jpg` para a primeira tela com a contagem regressiva
 - `mariana.png`
+- `mariana-album-01.png` ate `mariana-album-06.png`
 - `fabio.jpg`
 - `nossa-historia.jpg`
 - `rodape-casal.jpg`
