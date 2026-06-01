@@ -1,8 +1,8 @@
-Coloque aqui as fotos reais anexadas pelo casal para substituir os links remotos em `app/page.tsx`.
+Coloque aqui as fotos reais anexadas pelo casal para substituir os links remotos.
 
 Sugestao de nomes:
 
-- `hero-casal.jpg`
+- `capa-casal.jpg` para a primeira tela com a contagem regressiva
 - `mariana.jpg`
 - `fabio.jpg`
 - `nossa-historia.jpg`
