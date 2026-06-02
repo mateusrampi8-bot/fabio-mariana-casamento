@@ -23,7 +23,10 @@ const album = [
   "/images/mariana/album-04.png",
   "/images/mariana/album-05.png",
   "/images/mariana/album-06.png",
-  "/images/mariana/album-07.png"
+  "/images/mariana/album-07.png",
+  "/images/mariana/album-08.png",
+  "/images/mariana/album-09.png",
+  "/images/mariana/album-10.png"
 ];
 
 export default function MarianaMusicPlayer() {
