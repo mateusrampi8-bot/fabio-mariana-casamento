@@ -1,6 +1,6 @@
 "use client";
 
-import { Image as ImageIcon, Pause, Play, SkipBack, SkipForward, Volume2 } from "lucide-react";
+import { Image as ImageIcon, Pause, Play, SkipBack, SkipForward, Volume2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const playlist = [
@@ -31,6 +31,7 @@ export default function MarianaMusicPlayer() {
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [needsGesture, setNeedsGesture] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   const song = playlist[current];
 
@@ -134,8 +135,11 @@ export default function MarianaMusicPlayer() {
           </div>
           <div className="grid auto-rows-[160px] grid-cols-2 gap-4 md:grid-cols-3">
             {album.map((photo, index) => (
-              <div
+              <button
                 key={photo}
+                type="button"
+                onClick={() => setSelectedPhoto(photo)}
+                aria-label="Abrir foto da Mariana"
                 className={`group relative overflow-hidden rounded-lg bg-cover bg-center shadow-soft ${
                   index === 0 || index === 5 ? "row-span-2" : ""
                 }`}
@@ -145,6 +149,20 @@ export default function MarianaMusicPlayer() {
           </div>
         </div>
       </div>
+
+      {selectedPhoto ? (
+        <div className="fixed inset-0 z-[90] grid place-items-center bg-navy/90 p-5 backdrop-blur-sm" role="dialog" aria-modal="true">
+          <button
+            type="button"
+            onClick={() => setSelectedPhoto(null)}
+            aria-label="Fechar foto"
+            className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-full bg-white text-navy shadow-soft"
+          >
+            <X size={24} />
+          </button>
+          <img src={selectedPhoto} alt="Foto da Mariana" className="max-h-[88vh] max-w-[92vw] rounded-lg object-contain shadow-gold" />
+        </div>
+      ) : null}
     </section>
   );
 }
