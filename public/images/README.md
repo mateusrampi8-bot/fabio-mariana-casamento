@@ -4,7 +4,7 @@ Sugestao de nomes:
 
 - `capa-casal.jpg` para a primeira tela com a contagem regressiva
 - `mariana/principal.png`
-- `mariana/album-01.png` ate `mariana/album-06.png`
+- `mariana/album-01.png` ate `mariana/album-07.png`
 - `fabio/principal.png`
 - `nossa-historia.jpg`
 - `rodape-casal.jpg`
@@ -23,6 +23,7 @@ Coloque o album da Mariana na pasta `public/images/mariana` com estes nomes:
 - `album-04.png`
 - `album-05.png`
 - `album-06.png`
+- `album-07.png`
 
 Tambem pode usar `.jpg`, mas se usar outra extensao avise para eu ajustar o codigo.
 

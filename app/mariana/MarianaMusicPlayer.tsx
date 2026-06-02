@@ -17,12 +17,13 @@ const playlist = [
 ];
 
 const album = [
-  { title: "Sorriso de Mariana", src: "/images/mariana/album-01.png" },
-  { title: "Detalhes em rosa", src: "/images/mariana/album-02.png" },
-  { title: "Sonhos", src: "/images/mariana/album-03.png" },
-  { title: "Flores e luz", src: "/images/mariana/album-04.png" },
-  { title: "Memorias", src: "/images/mariana/album-05.png" },
-  { title: "Antes do sim", src: "/images/mariana/album-06.png" }
+  "/images/mariana/album-01.png",
+  "/images/mariana/album-02.png",
+  "/images/mariana/album-03.png",
+  "/images/mariana/album-04.png",
+  "/images/mariana/album-05.png",
+  "/images/mariana/album-06.png",
+  "/images/mariana/album-07.png"
 ];
 
 export default function MarianaMusicPlayer() {
@@ -134,15 +135,12 @@ export default function MarianaMusicPlayer() {
           <div className="grid auto-rows-[160px] grid-cols-2 gap-4 md:grid-cols-3">
             {album.map((photo, index) => (
               <div
-                key={photo.src}
+                key={photo}
                 className={`group relative overflow-hidden rounded-lg bg-cover bg-center shadow-soft ${
                   index === 0 || index === 5 ? "row-span-2" : ""
                 }`}
-                style={{ backgroundImage: `url(${photo.src}), url(/images/mariana/principal.png)` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/45 via-transparent to-transparent opacity-75 transition group-hover:opacity-95" />
-                <p className="absolute bottom-4 left-4 right-4 font-serif text-xl text-white drop-shadow">{photo.title}</p>
-              </div>
+                style={{ backgroundImage: `url(${photo}), url(/images/mariana/principal.png)` }}
+              />
             ))}
           </div>
         </div>
