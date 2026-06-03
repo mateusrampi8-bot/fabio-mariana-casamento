@@ -1,7 +1,7 @@
 "use client";
 
 import { Heart, Pause, Play, Volume2, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Nav } from "../components";
 
 const photoFiles = [
@@ -55,6 +55,17 @@ function optimizedPhotoPath(file: string) {
   return encodeURI(`/images/optimized/casal/${file.replace(/\.(png|jpe?g)$/i, ".jpg")}`);
 }
 
+function formatTime(seconds: number) {
+  if (!Number.isFinite(seconds)) return "0:00";
+
+  const minutes = Math.floor(seconds / 60);
+  const rest = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `${minutes}:${rest}`;
+}
+
 const photos = photoFiles.map(optimizedPhotoPath);
 const playlist = audioFiles.map((file) => encodeURI(`/audio/casal/${file}`));
 
@@ -64,8 +75,17 @@ export default function FotosCasal() {
   const [currentSong, setCurrentSong] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioMissing, setAudioMissing] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   const coupleAudio = playlist[currentSong];
+  const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
+  const featured = photos[27] ?? photos[0];
+  const collage = useMemo(
+    () => [photos[21], photos[22], photos[24], photos[23], photos[0], photos[25]].filter((photo): photo is string => Boolean(photo)),
+    []
+  );
+  const remaining = photos.filter((photo) => photo !== featured && !collage.includes(photo));
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -97,7 +117,7 @@ export default function FotosCasal() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fff8f5] text-navy">
+    <main className="min-h-screen overflow-hidden bg-[#fbf6ee] text-navy">
       <Nav />
       <audio
         ref={audioRef}
@@ -105,47 +125,119 @@ export default function FotosCasal() {
         preload="metadata"
         onEnded={nextSong}
         onError={() => setAudioMissing(true)}
+        onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
+        onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
       />
 
-      <section className="px-5 pb-20 pt-28 md:px-8">
-        <div className="mx-auto max-w-[1500px]">
-          <div className="mx-auto mb-10 max-w-3xl text-center">
-            <p className="font-script text-5xl text-champagne">Nossa trilha</p>
-            <h1 className="mt-2 font-serif text-5xl leading-none text-rose md:text-7xl">Fábio & Mariana</h1>
-            <div className="mx-auto my-6 flex max-w-sm items-center justify-center gap-4 text-champagne">
+      <section className="relative min-h-screen px-5 pb-16 pt-24 md:px-8">
+        <div className="absolute inset-0 opacity-[0.13]">
+          <img src={photos[0]} alt="" className="h-full w-full object-cover object-center" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#fbf6ee]/85 via-[#fbf6ee]/92 to-[#fbf6ee]" />
+        <div className="pointer-events-none absolute -left-16 top-36 hidden h-[31rem] w-52 rotate-[-12deg] rounded-[55%] border border-rose/15 bg-[radial-gradient(circle_at_42%_22%,#f3c4ca_0_9%,transparent_10%),radial-gradient(circle_at_58%_38%,#f6d9d2_0_10%,transparent_11%),linear-gradient(120deg,transparent,#d4af37_52%,transparent_54%)] opacity-70 md:block" />
+        <div className="pointer-events-none absolute -right-16 top-44 hidden h-[33rem] w-52 rotate-12 rounded-[55%] border border-rose/15 bg-[radial-gradient(circle_at_48%_24%,#f2c4cc_0_10%,transparent_11%),radial-gradient(circle_at_36%_48%,#f7ded6_0_10%,transparent_11%),linear-gradient(65deg,transparent,#d4af37_48%,transparent_50%)] opacity-70 md:block" />
+
+        <div className="relative mx-auto max-w-[1320px]">
+          <header className="mx-auto max-w-4xl text-center">
+            <p className="font-script text-5xl text-champagne md:text-7xl">Nossa trilha</p>
+            <h1 className="mt-1 font-serif text-6xl font-semibold leading-none text-rose md:text-8xl">Fábio & Mariana</h1>
+            <div className="mx-auto my-8 flex max-w-md items-center justify-center gap-4 text-champagne">
               <span className="h-px flex-1 bg-champagne/45" />
               <Heart size={20} />
               <span className="h-px flex-1 bg-champagne/45" />
             </div>
-            <div className="mx-auto flex max-w-md items-center justify-center gap-5 rounded-full border border-champagne/30 bg-white/65 px-5 py-4 shadow-soft backdrop-blur">
+
+            <div className="mx-auto flex max-w-[540px] items-center gap-5 rounded-full bg-white/90 p-3 pr-7 shadow-soft ring-1 ring-champagne/10 backdrop-blur">
               <button
                 type="button"
                 onClick={toggleAudio}
                 aria-label={isPlaying ? "Pausar música do casal" : "Tocar música do casal"}
-                className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-champagne text-white shadow-gold transition hover:scale-105"
+                className="relative grid h-24 w-24 shrink-0 place-items-center rounded-full bg-[#101010] text-white shadow-gold transition hover:scale-105"
               >
-                {isPlaying ? <Pause size={23} /> : <Play size={23} />}
+                <span className="absolute inset-2 rounded-full border border-white/10" />
+                {isPlaying ? <Pause size={26} /> : <Play size={26} />}
               </button>
-              <div className="min-w-0 text-left">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-champagne">Player do casal</p>
-                <p className="truncate font-serif text-xl text-navy">{audioMissing ? "Preparando a trilha" : "Uma música para nós dois"}</p>
+              <div className="min-w-0 flex-1 text-left">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-champagne">Player do casal</p>
+                    <p className="truncate font-serif text-xl text-navy md:text-2xl">{audioMissing ? "Preparando a trilha" : "Uma música para nós dois"}</p>
+                  </div>
+                  <Volume2 className="shrink-0 text-rose" size={18} />
+                </div>
+                <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-linen">
+                  <div className="h-full rounded-full bg-champagne" style={{ width: `${progress}%` }} />
+                </div>
+                <div className="mt-2 flex justify-between text-[10px] font-semibold text-navy/45">
+                  <span>{formatTime(currentTime)}</span>
+                  <span>{formatTime(duration)}</span>
+                </div>
               </div>
-              <Volume2 className="shrink-0 text-rose" size={22} />
             </div>
-          </div>
+          </header>
 
-          <div className="grid auto-rows-[180px] grid-cols-2 gap-4 md:auto-rows-[220px] md:grid-cols-4">
-            {photos.map((photo, index) => (
+          <div className="mt-20 grid items-center gap-10 md:grid-cols-[0.78fr_1.35fr]">
+            <div className="mx-auto max-w-sm text-center md:text-left">
+              <p className="font-script text-5xl leading-tight text-rose">Nosso lugar favorito</p>
+              <p className="mt-8 text-lg leading-8 text-navy/68">
+                Entre risos, conversas e o lar que sonhamos construir, a vida fica mais bonita.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSelectedPhoto(featured)}
+              aria-label="Abrir foto destaque do casal"
+              className="overflow-hidden rounded-lg bg-white p-2 shadow-soft transition hover:scale-[1.01]"
+            >
+              <img src={featured} alt="Foto destaque do casal" className="aspect-[1.75/1] w-full rounded-md object-cover" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative bg-[#fbf6ee] px-5 pb-20 md:px-8">
+        <div className="pointer-events-none absolute left-0 right-0 top-0 h-10 bg-[linear-gradient(180deg,rgba(16,35,63,0.08),transparent)] opacity-30" />
+        <div className="mx-auto max-w-[1320px]">
+          <div className="relative grid gap-4 md:grid-cols-3">
+            {collage.map((photo, index) => (
               <button
                 key={photo}
                 type="button"
                 onClick={() => setSelectedPhoto(photo)}
                 aria-label="Abrir foto do casal"
-                className={`rounded-lg bg-cover bg-center shadow-soft transition hover:scale-[1.015] ${
-                  index === 0 || index === 7 || index === 16 || index === 24 ? "row-span-2" : ""
+                className={`overflow-hidden rounded-lg bg-white p-2 shadow-soft transition hover:scale-[1.012] ${
+                  index === 4 ? "md:absolute md:left-1/2 md:top-1/2 md:z-10 md:w-[33%] md:-translate-x-1/2 md:-translate-y-[38%] md:rotate-[-3deg]" : ""
                 }`}
-                style={{ backgroundImage: `url(${photo}), url(/images/optimized/capa-casal-premium.jpg)` }}
-              />
+              >
+                <img
+                  src={photo}
+                  alt="Foto do casal"
+                  loading={index < 3 ? "eager" : "lazy"}
+                  className={`w-full rounded-md object-cover ${index === 4 ? "aspect-[0.9/1]" : "aspect-[1.18/1]"}`}
+                />
+                {index === 4 ? <span className="block py-4 text-center font-script text-2xl text-rose">Noite inesquecível</span> : null}
+              </button>
+            ))}
+          </div>
+
+          <div className="mx-auto my-12 max-w-md text-center">
+            <p className="font-serif text-5xl text-champagne">“</p>
+            <p className="text-lg text-navy/65">Não são só fotos. São pedaços do caminho que trouxe vocês até aqui.</p>
+          </div>
+
+          <div className="grid auto-rows-[190px] grid-cols-2 gap-4 md:auto-rows-[230px] md:grid-cols-4">
+            {remaining.map((photo, index) => (
+              <button
+                key={photo}
+                type="button"
+                onClick={() => setSelectedPhoto(photo)}
+                aria-label="Abrir foto do casal"
+                className={`overflow-hidden rounded-lg bg-white p-2 shadow-soft transition hover:scale-[1.012] ${
+                  index === 3 || index === 11 ? "row-span-2" : ""
+                }`}
+              >
+                <img src={photo} alt="Foto do casal" loading="lazy" className="h-full w-full rounded-md object-cover" />
+              </button>
             ))}
           </div>
         </div>
