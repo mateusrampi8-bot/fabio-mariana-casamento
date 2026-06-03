@@ -86,7 +86,7 @@ export default function FabioMediaSection() {
           <div className="mb-6 flex items-end justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-champagne">Album de fotos</p>
-              <h2 className="mt-2 font-serif text-5xl text-white">Fabio</h2>
+              <h2 className="mt-2 font-serif text-5xl text-white">Fábio</h2>
             </div>
             <ImageIcon className="text-champagne" size={30} />
           </div>
@@ -96,7 +96,7 @@ export default function FabioMediaSection() {
                 key={photo}
                 type="button"
                 onClick={() => setSelectedPhoto(photo)}
-                aria-label="Abrir foto do Fabio"
+                aria-label="Abrir foto do Fábio"
                 className={`group relative overflow-hidden rounded-lg bg-cover bg-center shadow-gold transition hover:scale-[1.015] ${
                   index === 0 || index === 5 ? "row-span-2" : ""
                 }`}
@@ -109,7 +109,7 @@ export default function FabioMediaSection() {
         <div className="rounded-l-lg border border-r-0 border-champagne/20 bg-white/5 p-6 shadow-gold backdrop-blur md:rounded-lg md:border-r">
           <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr]">
             <div className="flex flex-col justify-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-champagne">Playlist do Fabio</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-champagne">Playlist do Fábio</p>
               <h2 className="mt-3 font-serif text-5xl text-white">{song.title}</h2>
               <p className="mt-2 text-lg text-white/70">{song.artist}</p>
               {needsGesture ? (
@@ -162,7 +162,7 @@ export default function FabioMediaSection() {
           >
             <X size={24} />
           </button>
-          <img src={selectedPhoto} alt="Foto do Fabio" className="max-h-[88vh] max-w-[92vw] rounded-lg object-contain shadow-gold" />
+          <img src={selectedPhoto} alt="Foto do Fábio" className="max-h-[88vh] max-w-[92vw] rounded-lg object-contain shadow-gold" />
         </div>
       ) : null}
     </section>
