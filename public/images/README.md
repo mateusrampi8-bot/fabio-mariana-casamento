@@ -6,6 +6,7 @@ Sugestao de nomes:
 - `mariana/principal.png`
 - `mariana/album-01.png` ate `mariana/album-10.png`
 - `fabio/principal.png`
+- `fabio/album-01.png` ate `fabio/album-10.png`
 - `nossa-historia.jpg`
 - `rodape-casal.jpg`
 - `galeria-01.jpg` ate `galeria-08.jpg`
@@ -20,6 +21,7 @@ Coloque o album da Mariana na pasta `public/images/mariana` com estes nomes:
 - `album-01.png`
 - `album-02.png`
 - `album-03.png`
+- `album-04.png` ate `album-10.png`
 - `album-04.png`
 - `album-05.png`
 - `album-06.png`
