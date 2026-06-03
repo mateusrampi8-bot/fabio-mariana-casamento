@@ -16,9 +16,7 @@ export const pages = [
   { label: "Fábio", href: "/fabio" },
   { label: "História", href: "/nossa-historia" },
   { label: "Fotos Casal", href: "/fotos-casal" },
-  { label: "Playlist Casal", href: "/playlist-casal" },
   { label: "Recados", href: "/recados" },
-  { label: "Álbum", href: "/album" },
   { label: "Detalhes", href: "/detalhes" }
 ];
 
