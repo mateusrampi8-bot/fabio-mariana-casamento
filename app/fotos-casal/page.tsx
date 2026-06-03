@@ -1,17 +1,80 @@
 "use client";
 
 import { Heart, Pause, Play, Volume2, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Nav } from "../components";
 
-const photos = Array.from({ length: 12 }, (_, index) => `/images/casal/album-${String(index + 1).padStart(2, "0")}.png`);
-const coupleAudio = "/audio/casal/casal-01.mp3";
+const photoFiles = [
+  "0877fe5f-f5ae-41d8-9524-0be32238a22d.png",
+  "0cc936da-8ce3-4a7c-89bf-21093638fb0c.png",
+  "2c8d8ad5-fef9-4b48-9d52-0c3d6d85aec7.png",
+  "30d2aef1-6dc6-40a0-9d69-451aae01c1a7.png",
+  "3e23dfe0-4eda-4d7f-9963-730df4866ffd.png",
+  "4013464d-4a7a-46a6-bd9a-907b733a1ef4.png",
+  "44f222d4-23b0-4a27-9a77-4ccad0d65752.png",
+  "560a5c0c-bcf9-4426-baa3-9dd3c0f4a229.png",
+  "727e1fa8-7f26-4b1b-a4c4-9a5c7742d89d.png",
+  "778a0e88-81a1-4721-baa1-90bac1984ff6.png",
+  "7d9573d5-2431-4849-9386-7c49ebc76871.png",
+  "84aa4aa8-aa42-4830-bfd4-d52105abaac1.png",
+  "9935d1d9-278d-4f9e-8873-e410d3fb5216.png",
+  "a7525def-e723-4236-ac33-22cf5f1c5cd3.png",
+  "abf5af1e-19a6-4534-83fa-1badc6db0e60.png",
+  "c2558d6d-705c-4b28-9241-ed023a08f44c.png",
+  "ChatGPT Image 2 de jun. de 2026, 22_56_27.png",
+  "ChatGPT Image 2 de jun. de 2026, 22_59_44.png",
+  "ChatGPT Image 2 de jun. de 2026, 23_11_59.png",
+  "ChatGPT Image 2 de jun. de 2026, 23_30_27.png",
+  "d2b99023-0a66-4361-bf3d-3fb863984851.png",
+  "WhatsApp Image 2026-05-30 at 09.42.50 (1).jpeg",
+  "WhatsApp Image 2026-05-30 at 09.42.50 (2).jpeg",
+  "WhatsApp Image 2026-05-30 at 09.42.50.jpeg",
+  "WhatsApp Image 2026-05-30 at 09.42.51 (1).jpeg",
+  "WhatsApp Image 2026-05-30 at 09.42.51 (2).jpeg",
+  "WhatsApp Image 2026-05-30 at 09.42.51.jpeg",
+  "WhatsApp Image 2026-06-02 at 13.05.08 (1).jpeg",
+  "WhatsApp Image 2026-06-02 at 13.05.08 (3).jpeg",
+  "WhatsApp Image 2026-06-02 at 13.13.24 (1).jpeg"
+];
+
+const audioFiles = [
+  "1-SpotiDownloader.com - Angel - Libera.mp3",
+  "2-SpotiDownloader.com - Ave Verum (Albinoni's Adagio in G minor) - Tomaso Albinoni.mp3",
+  "3-SpotiDownloader.com - Demons - Imagine Dragons (1).mp3",
+  "4-SpotiDownloader.com - Birds - Imagine Dragons.mp3",
+  "5-SpotiDownloader.com - The Call - Regina Spektor (1).mp3",
+  "6-SpotiDownloader.com - Into the West - Annie Lennox.mp3",
+  "7-SpotiDownloader.com - May It Be - Enya.mp3",
+  "8-SpotiDownloader.com - Mirrors - Justin Timberlake.mp3",
+  "9-SpotiDownloader.com - Only Hope - Mandy Moore.mp3",
+  "10-SpotiDownloader.com - Turning Page - Sleeping At Last.mp3",
+  "11-SpotiDownloader.com - Runaway - AURORA.mp3"
+];
+
+const photos = photoFiles.map((file) => encodeURI(`/images/casal/${file}`));
+const playlist = audioFiles.map((file) => encodeURI(`/audio/casal/${file}`));
 
 export default function FotosCasal() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const [currentSong, setCurrentSong] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioMissing, setAudioMissing] = useState(false);
+
+  const coupleAudio = playlist[currentSong];
+
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    audioRef.current
+      ?.play()
+      .then(() => setAudioMissing(false))
+      .catch(() => setIsPlaying(false));
+  }, [currentSong, isPlaying]);
+
+  function nextSong() {
+    setCurrentSong((index) => (index + 1) % playlist.length);
+  }
 
   function toggleAudio() {
     const audio = audioRef.current;
@@ -36,7 +99,7 @@ export default function FotosCasal() {
         ref={audioRef}
         src={coupleAudio}
         preload="metadata"
-        onEnded={() => setIsPlaying(false)}
+        onEnded={nextSong}
         onError={() => setAudioMissing(true)}
       />
 
@@ -61,7 +124,7 @@ export default function FotosCasal() {
               </button>
               <div className="min-w-0 text-left">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-champagne">Player do casal</p>
-                <p className="truncate font-serif text-xl text-navy">{audioMissing ? "Adicione o MP3 do casal" : "Uma música para nós dois"}</p>
+                <p className="truncate font-serif text-xl text-navy">{audioMissing ? "Preparando a trilha" : "Uma música para nós dois"}</p>
               </div>
               <Volume2 className="shrink-0 text-rose" size={22} />
             </div>
@@ -75,7 +138,7 @@ export default function FotosCasal() {
                 onClick={() => setSelectedPhoto(photo)}
                 aria-label="Abrir foto do casal"
                 className={`rounded-lg bg-cover bg-center shadow-soft transition hover:scale-[1.015] ${
-                  index === 0 || index === 7 ? "row-span-2" : ""
+                  index === 0 || index === 7 || index === 16 || index === 24 ? "row-span-2" : ""
                 }`}
                 style={{ backgroundImage: `url(${photo}), url(/images/capa-casal-premium.png)` }}
               />
