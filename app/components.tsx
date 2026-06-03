@@ -4,14 +4,14 @@ import { coverImage, fallbackCover, pages } from "./data";
 
 export function Nav() {
   return (
-    <nav className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-transparent px-5 py-4 backdrop-blur-[2px]">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-        <Link href="/" className="font-serif text-3xl text-champagne drop-shadow-sm">
+    <nav className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-transparent px-4 py-3 backdrop-blur-[2px]">
+      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-3">
+        <Link href="/" className="shrink-0 font-serif text-3xl text-champagne drop-shadow-sm">
           F | M
         </Link>
-        <div className="scrollbar-hide flex max-w-[72vw] gap-5 overflow-x-auto text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/75 drop-shadow-sm md:gap-8">
+        <div className="scrollbar-hide flex flex-1 justify-start gap-4 overflow-x-auto px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-champagne drop-shadow-[0_1px_8px_rgba(16,35,63,.55)] md:justify-center lg:gap-6 xl:text-[11px]">
           {pages.map((page) => (
-            <Link key={page.href} href={page.href} className="whitespace-nowrap transition hover:text-champagne">
+            <Link key={page.href} href={page.href} className="whitespace-nowrap transition hover:text-ivory">
               {page.label}
             </Link>
           ))}

@@ -1,17 +1,7 @@
-import { Briefcase, GraduationCap, Heart, Star, Trophy, Users } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Nav } from "../components";
 import { fabioImage } from "../data";
 import FabioMediaSection from "./FabioMediaSection";
-
-const timeline = [
-  { label: "Nascimento", icon: Heart },
-  { label: "Infância", icon: Star },
-  { label: "Amigos", icon: Users },
-  { label: "Faculdade", icon: GraduationCap },
-  { label: "Trabalho", icon: Briefcase },
-  { label: "Conquistas", icon: Trophy },
-  { label: "Conheceu Mariana", icon: Heart }
-];
 
 export default function Fabio() {
   return (
@@ -51,19 +41,11 @@ export default function Fabio() {
 
       <FabioMediaSection />
 
-      <section className="relative overflow-hidden bg-[#061426] px-6 py-14 text-white">
+      <section className="relative overflow-hidden bg-[#061426] px-6 py-16 text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(212,175,106,.18),transparent_30%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,.08),transparent_28%)]" />
-        <div className="relative mx-auto max-w-7xl">
-          <h2 className="text-center font-serif text-3xl uppercase tracking-[0.22em] text-champagne">Linha do Tempo</h2>
-          <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4 lg:grid-cols-7">
-            {timeline.map((item) => (
-              <div key={item.label} className="text-center">
-                <item.icon className="mx-auto mb-4 text-champagne" size={30} />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/90">{item.label}</p>
-              </div>
-            ))}
-          </div>
-          <p className="mx-auto mt-10 max-w-2xl text-center font-serif text-xl leading-8 text-white/78">
+        <div className="relative mx-auto max-w-4xl text-center">
+          <p className="font-script text-5xl text-champagne">Fábio em uma frase</p>
+          <p className="mx-auto mt-8 max-w-3xl font-serif text-3xl leading-tight text-white/86 md:text-4xl">
             “Tudo posso naquele que me fortalece.”
           </p>
           <Heart className="mx-auto mt-6 text-champagne" />

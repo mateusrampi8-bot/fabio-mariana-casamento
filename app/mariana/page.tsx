@@ -1,17 +1,7 @@
-import { BookOpen, GraduationCap, Heart, Star, Trophy } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Nav } from "../components";
 import { fallbackMariana, marianaImage } from "../data";
 import MarianaMusicPlayer from "./MarianaMusicPlayer";
-
-const timeline = [
-  { label: "Nascimento", icon: Heart },
-  { label: "Infância", icon: Star },
-  { label: "Escola", icon: BookOpen },
-  { label: "Faculdade", icon: GraduationCap },
-  { label: "Conquistas", icon: Trophy },
-  { label: "Sonhos", icon: Star },
-  { label: "Conheceu o Fábio", icon: Heart }
-];
 
 export default function Mariana() {
   return (
@@ -54,19 +44,11 @@ export default function Mariana() {
 
       <MarianaMusicPlayer />
 
-      <section id="timeline" className="relative overflow-hidden bg-gradient-to-r from-[#bd6470] via-[#d27982] to-[#c46470] px-6 py-14 text-white">
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#bd6470] via-[#d27982] to-[#c46470] px-6 py-16 text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(255,255,255,.16),transparent_30%),radial-gradient(circle_at_80%_80%,rgba(212,175,106,.18),transparent_28%)]" />
-        <div className="relative mx-auto max-w-7xl">
-          <h2 className="text-center font-serif text-3xl uppercase tracking-[0.22em] text-[#f5e3dc]">Linha do Tempo</h2>
-          <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4 lg:grid-cols-7">
-            {timeline.map((item) => (
-              <div key={item.label} className="text-center">
-                <item.icon className="mx-auto mb-4 text-[#f1c67a]" size={30} />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/90">{item.label}</p>
-              </div>
-            ))}
-          </div>
-          <p className="mx-auto mt-10 max-w-2xl text-center font-serif text-xl leading-8 text-[#ffe9df]">
+        <div className="relative mx-auto max-w-4xl text-center">
+          <p className="font-script text-5xl text-[#ffe9df]">Mariana em uma frase</p>
+          <p className="mx-auto mt-8 max-w-3xl font-serif text-3xl leading-tight text-[#ffe9df] md:text-4xl">
             “Que eu nunca perca a capacidade de sonhar e a certeza de que Deus cuida de cada detalhe.”
           </p>
           <Heart className="mx-auto mt-6 text-[#ffe9df]" />

@@ -19,7 +19,6 @@ export const pages = [
   { label: "Playlist Casal", href: "/playlist-casal" },
   { label: "Recados", href: "/recados" },
   { label: "Álbum", href: "/album" },
-  { label: "Cápsula", href: "/capsula-do-tempo" },
   { label: "Detalhes", href: "/detalhes" }
 ];
 
