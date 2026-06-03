@@ -206,7 +206,7 @@ export default function FotosCasal() {
                 onClick={() => setSelectedPhoto(photo)}
                 aria-label="Abrir foto do casal"
                 className={`overflow-hidden rounded-lg bg-white p-2 shadow-soft transition hover:scale-[1.012] ${
-                  index === 4 ? "md:absolute md:left-1/2 md:top-1/2 md:z-10 md:w-[33%] md:-translate-x-1/2 md:-translate-y-[38%] md:rotate-[-3deg]" : ""
+                  index === 4 ? "md:rotate-[-2deg]" : ""
                 }`}
               >
                 <img
