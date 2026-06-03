@@ -131,7 +131,7 @@ export default function FabioMediaSection() {
               </div>
             </div>
 
-            <div className="max-h-[540px] space-y-2 overflow-y-auto pr-2">
+            <div className="space-y-2">
               {playlist.map((item, index) => (
                 <button
                   key={item.src}
