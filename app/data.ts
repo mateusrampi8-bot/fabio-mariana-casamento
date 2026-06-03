@@ -1,8 +1,8 @@
 export const weddingDate = new Date("2026-06-13T16:30:00-03:00");
 
-export const coverImage = "/images/capa-casal-premium.png";
-export const marianaImage = "/images/mariana/principal.png";
-export const fabioImage = "/images/fabio/principal.png";
+export const coverImage = "/images/optimized/capa-casal-premium.jpg";
+export const marianaImage = "/images/optimized/mariana/principal.jpg";
+export const fabioImage = "/images/optimized/fabio/principal.jpg";
 
 export const fallbackCover =
   "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=2200&q=88";

@@ -4,16 +4,16 @@ import { Image as ImageIcon, X } from "lucide-react";
 import { useState } from "react";
 
 const photos = [
-  "/images/fabio/album-01.png",
-  "/images/fabio/album-02.png",
-  "/images/fabio/album-03.png",
-  "/images/fabio/album-04.png",
-  "/images/fabio/album-05.png",
-  "/images/fabio/album-06.png",
-  "/images/fabio/album-07.png",
-  "/images/fabio/album-08.png",
-  "/images/fabio/album-09.png",
-  "/images/fabio/album-10.png"
+  "/images/optimized/fabio/album-01.jpg",
+  "/images/optimized/fabio/album-02.jpg",
+  "/images/optimized/fabio/album-03.jpg",
+  "/images/optimized/fabio/album-04.jpg",
+  "/images/optimized/fabio/album-05.jpg",
+  "/images/optimized/fabio/album-06.jpg",
+  "/images/optimized/fabio/album-07.jpg",
+  "/images/optimized/fabio/album-08.jpg",
+  "/images/optimized/fabio/album-09.jpg",
+  "/images/optimized/fabio/album-10.jpg"
 ];
 
 export default function FabioGallery() {
@@ -39,7 +39,7 @@ export default function FabioGallery() {
               className={`rounded-lg bg-cover bg-center shadow-gold transition hover:scale-[1.015] ${
                 index === 0 || index === 7 ? "row-span-2" : ""
               }`}
-              style={{ backgroundImage: `url(${photo}), url(/images/fabio/principal.png)` }}
+              style={{ backgroundImage: `url(${photo}), url(/images/optimized/fabio/principal.jpg)` }}
             />
           ))}
         </div>

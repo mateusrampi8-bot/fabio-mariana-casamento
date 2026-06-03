@@ -17,16 +17,16 @@ const playlist = [
 ].map((song) => ({ ...song, src: encodeURI(`/audio/mariana/${song.file}`) }));
 
 const album = [
-  "/images/mariana/album-01.png",
-  "/images/mariana/album-02.png",
-  "/images/mariana/album-03.png",
-  "/images/mariana/album-04.png",
-  "/images/mariana/album-05.png",
-  "/images/mariana/album-06.png",
-  "/images/mariana/album-07.png",
-  "/images/mariana/album-08.png",
-  "/images/mariana/album-09.png",
-  "/images/mariana/album-10.png"
+  "/images/optimized/mariana/album-01.jpg",
+  "/images/optimized/mariana/album-02.jpg",
+  "/images/optimized/mariana/album-03.jpg",
+  "/images/optimized/mariana/album-04.jpg",
+  "/images/optimized/mariana/album-05.jpg",
+  "/images/optimized/mariana/album-06.jpg",
+  "/images/optimized/mariana/album-07.jpg",
+  "/images/optimized/mariana/album-08.jpg",
+  "/images/optimized/mariana/album-09.jpg",
+  "/images/optimized/mariana/album-10.jpg"
 ];
 
 export default function MarianaMusicPlayer() {
@@ -146,7 +146,7 @@ export default function MarianaMusicPlayer() {
                 className={`group relative overflow-hidden rounded-lg bg-cover bg-center shadow-soft ${
                   index === 0 || index === 5 ? "row-span-2" : ""
                 }`}
-                style={{ backgroundImage: `url(${photo}), url(/images/mariana/principal.png)` }}
+                style={{ backgroundImage: `url(${photo}), url(/images/optimized/mariana/principal.jpg)` }}
               />
             ))}
           </div>

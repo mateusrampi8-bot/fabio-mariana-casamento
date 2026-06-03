@@ -51,7 +51,11 @@ const audioFiles = [
   "11-SpotiDownloader.com - Runaway - AURORA.mp3"
 ];
 
-const photos = photoFiles.map((file) => encodeURI(`/images/casal/${file}`));
+function optimizedPhotoPath(file: string) {
+  return encodeURI(`/images/optimized/casal/${file.replace(/\.(png|jpe?g)$/i, ".jpg")}`);
+}
+
+const photos = photoFiles.map(optimizedPhotoPath);
 const playlist = audioFiles.map((file) => encodeURI(`/audio/casal/${file}`));
 
 export default function FotosCasal() {
@@ -140,7 +144,7 @@ export default function FotosCasal() {
                 className={`rounded-lg bg-cover bg-center shadow-soft transition hover:scale-[1.015] ${
                   index === 0 || index === 7 || index === 16 || index === 24 ? "row-span-2" : ""
                 }`}
-                style={{ backgroundImage: `url(${photo}), url(/images/capa-casal-premium.png)` }}
+                style={{ backgroundImage: `url(${photo}), url(/images/optimized/capa-casal-premium.jpg)` }}
               />
             ))}
           </div>
