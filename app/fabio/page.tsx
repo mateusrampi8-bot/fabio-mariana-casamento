@@ -2,6 +2,7 @@ import { Briefcase, GraduationCap, Heart, Star, Trophy, Users } from "lucide-rea
 import { Nav } from "../components";
 import { fabioImage } from "../data";
 import FabioGallery from "./FabioGallery";
+import FabioMusicPlayer from "./FabioMusicPlayer";
 
 const timeline = [
   { label: "Nascimento", icon: Heart },
@@ -50,6 +51,8 @@ export default function Fabio() {
       </section>
 
       <FabioGallery />
+
+      <FabioMusicPlayer />
 
       <section className="relative overflow-hidden bg-[#061426] px-6 py-14 text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(212,175,106,.18),transparent_30%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,.08),transparent_28%)]" />

@@ -4,17 +4,17 @@ import { Image as ImageIcon, Pause, Play, SkipBack, SkipForward, Volume2, X } fr
 import { useEffect, useRef, useState } from "react";
 
 const playlist = [
-  { title: "deja vu", artist: "Olivia Rodrigo", src: "/audio/deja%20vu%20-%20Olivia%20Rodrigo.mp3" },
-  { title: "good 4 u", artist: "Olivia Rodrigo", src: "/audio/good%204%20u%20-%20Olivia%20Rodrigo.mp3" },
-  { title: "traitor", artist: "Olivia Rodrigo", src: "/audio/traitor%20-%20Olivia%20Rodrigo.mp3" },
-  { title: "favorite crime", artist: "Olivia Rodrigo", src: "/audio/favorite%20crime%20-%20Olivia%20Rodrigo.mp3" },
-  { title: "The Call", artist: "Regina Spektor", src: "/audio/The%20Call%20-%20Regina%20Spektor.mp3" },
-  { title: "Kings & Queens", artist: "Ava Max", src: "/audio/Kings%20%26%20Queens%20-%20Ava%20Max.mp3" },
-  { title: "Take Me To Church", artist: "Hozier", src: "/audio/Take%20Me%20To%20Church%20-%20Hozier.mp3" },
-  { title: "Hall of Fame", artist: "The Script", src: "/audio/Hall%20of%20Fame%20-%20The%20Script.mp3" },
-  { title: "Demons", artist: "Imagine Dragons", src: "/audio/Demons%20-%20Imagine%20Dragons.mp3" },
-  { title: "Radioactive", artist: "Imagine Dragons", src: "/audio/Radioactive%20-%20Imagine%20Dragons.mp3" }
-];
+  { title: "deja vu", artist: "Olivia Rodrigo", file: "deja vu - Olivia Rodrigo.mp3" },
+  { title: "good 4 u", artist: "Olivia Rodrigo", file: "good 4 u - Olivia Rodrigo.mp3" },
+  { title: "traitor", artist: "Olivia Rodrigo", file: "traitor - Olivia Rodrigo.mp3" },
+  { title: "favorite crime", artist: "Olivia Rodrigo", file: "favorite crime - Olivia Rodrigo.mp3" },
+  { title: "The Call", artist: "Regina Spektor", file: "The Call - Regina Spektor.mp3" },
+  { title: "Kings & Queens", artist: "Ava Max", file: "Kings & Queens - Ava Max.mp3" },
+  { title: "Take Me To Church", artist: "Hozier", file: "Take Me To Church - Hozier.mp3" },
+  { title: "Hall of Fame", artist: "The Script", file: "Hall of Fame - The Script.mp3" },
+  { title: "Demons", artist: "Imagine Dragons", file: "Demons - Imagine Dragons.mp3" },
+  { title: "Radioactive", artist: "Imagine Dragons", file: "Radioactive - Imagine Dragons.mp3" }
+].map((song) => ({ ...song, src: encodeURI(`/audio/mariana/${song.file}`) }));
 
 const album = [
   "/images/mariana/album-01.png",

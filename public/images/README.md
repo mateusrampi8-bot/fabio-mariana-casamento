@@ -1,27 +1,32 @@
-Coloque aqui as fotos reais anexadas pelo casal para substituir os links remotos.
+Coloque aqui as fotos reais do site.
 
-Sugestao de nomes:
+## Capa
 
-- `capa-casal.jpg` para a primeira tela com a contagem regressiva
-- `mariana/principal.png`
-- `mariana/album-01.png` ate `mariana/album-10.png`
-- `fabio/principal.png`
-- `fabio/album-01.png` ate `fabio/album-10.png`
-- `nossa-historia.jpg`
-- `rodape-casal.jpg`
-- `galeria-01.jpg` ate `galeria-08.jpg`
-- `recado-01.jpg` ate `recado-04.jpg`
-
-Depois, troque os valores do objeto `images` e da lista `gallery` para caminhos como `/images/hero-casal.jpg`.
+- `capa-casal-premium.png`
+- `capa-casal.png`
 
 ## Fotos da Mariana
 
-Coloque o album da Mariana na pasta `public/images/mariana` com estes nomes:
+Pasta: `public/images/mariana`
+
+- `principal.png`
+- `album-01.png` ate `album-10.png`
+- `extra-01.png`, `extra-02.png`, etc. para guardar sobras
+
+## Fotos do Fabio
+
+Pasta: `public/images/fabio`
+
+- `principal.png`
+- `album-01.png` ate `album-10.png`
+
+## Fotos do casal
+
+Pasta: `public/images/casal`
 
 - `album-01.png`
 - `album-02.png`
 - `album-03.png`
-- `album-04.png` ate `album-10.png`
 - `album-04.png`
 - `album-05.png`
 - `album-06.png`
@@ -29,14 +34,7 @@ Coloque o album da Mariana na pasta `public/images/mariana` com estes nomes:
 - `album-08.png`
 - `album-09.png`
 - `album-10.png`
+- `album-11.png`
+- `album-12.png`
 
-Tambem pode usar `.jpg`, mas se usar outra extensao avise para eu ajustar o codigo.
-
-## Fotos do Fabio
-
-Coloque as fotos do Fabio na pasta `public/images/fabio`.
-
-- `principal.png`
-- `album-01.png`
-- `album-02.png`
-- `album-03.png`
+Se usar `.jpg` ou outra extensao, avise para eu ajustar o codigo.
