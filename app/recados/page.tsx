@@ -13,30 +13,6 @@ type GuestMessage = {
   createdAt: string;
 };
 
-const featuredMessages = [
-  {
-    id: "mae-noiva",
-    name: "Claudia",
-    relation: "Mãe da noiva",
-    message: "Minha filha, hoje você inicia um novo capítulo da sua vida e eu só posso desejar toda a felicidade do mundo.",
-    createdAt: ""
-  },
-  {
-    id: "pai-noivo",
-    name: "Carlos",
-    relation: "Pai do noivo",
-    message: "Fábio, ver você encontrando alguém que te completa é o maior presente que eu poderia ter.",
-    createdAt: ""
-  },
-  {
-    id: "padrinhos",
-    name: "Marcos e Juliana",
-    relation: "Padrinhos",
-    message: "É uma alegria imensa fazer parte desse momento tão especial. Que a vida de vocês seja cheia de amor.",
-    createdAt: ""
-  }
-];
-
 export default function Recados() {
   const [messages, setMessages] = useState<GuestMessage[]>([]);
   const [configured, setConfigured] = useState(true);
@@ -52,8 +28,6 @@ export default function Recados() {
       .catch(() => setConfigured(false))
       .finally(() => setLoading(false));
   }, []);
-
-  const allMessages = [...messages, ...featuredMessages];
 
   return (
     <PageShell>
@@ -82,8 +56,18 @@ export default function Recados() {
 
           {loading ? <p className="text-center text-navy/60">Carregando recados...</p> : null}
 
+          {!loading && messages.length === 0 ? (
+            <div className="rounded-lg border border-champagne/18 bg-white/82 p-8 text-center shadow-soft">
+              <Heart className="mx-auto mb-4 text-champagne" size={24} />
+              <p className="font-serif text-3xl text-rose">Ainda não há recados por aqui.</p>
+              <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-navy/60">
+                Quando os convidados enviarem mensagens pelo link, elas aparecerão neste mural.
+              </p>
+            </div>
+          ) : null}
+
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {allMessages.map((item) => (
+            {messages.map((item) => (
               <article key={item.id} className="rounded-lg border border-champagne/18 bg-white/82 p-6 shadow-soft">
                 <div className="mb-5 flex items-start justify-between gap-4">
                   <div>
