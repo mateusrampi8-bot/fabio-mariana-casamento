@@ -10,6 +10,7 @@ type GuestMessage = {
   name: string;
   relation: string;
   message: string;
+  signature?: string;
   createdAt: string;
 };
 
@@ -32,8 +33,9 @@ export default function Recados() {
   return (
     <PageShell>
       <PageHero eyebrow="Cartas para" title="Fábio & Mariana" subtitle="Palavras escritas por quem caminhou conosco até aqui." dark />
-      <section className="bg-[#fbf6ee] px-5 py-20 md:px-8">
-        <div className="mx-auto max-w-7xl">
+      <section className="relative bg-[#fbf6ee] px-5 py-20 md:px-8">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(247,215,221,0.62),transparent_28%),radial-gradient(circle_at_88%_18%,rgba(212,175,55,0.18),transparent_30%)]" />
+        <div className="relative mx-auto max-w-7xl">
           <div className="mb-12 flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left">
             <div>
               <p className="font-script text-5xl text-champagne">Mural de carinho</p>
@@ -68,7 +70,7 @@ export default function Recados() {
 
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {messages.map((item) => (
-              <article key={item.id} className="rounded-lg border border-champagne/18 bg-white/82 p-6 shadow-soft">
+              <article key={item.id} className="rounded-lg border border-champagne/18 bg-white/86 p-6 shadow-soft">
                 <div className="mb-5 flex items-start justify-between gap-4">
                   <div>
                     <h3 className="font-serif text-2xl text-navy">{item.name}</h3>
@@ -77,7 +79,14 @@ export default function Recados() {
                   <MessageCircle className="shrink-0 text-champagne" size={22} />
                 </div>
                 <p className="text-base leading-8 text-navy/68">“{item.message}”</p>
-                <Heart className="mx-auto mt-6 text-rose/75" size={18} />
+                {item.signature ? (
+                  <div className="mt-6 rounded-md border border-champagne/15 bg-[#fffaf6] px-4 py-3">
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-champagne">Assinatura</p>
+                    <img src={item.signature} alt="Assinatura feita à mão" className="h-20 max-w-full object-contain object-left" />
+                  </div>
+                ) : (
+                  <Heart className="mx-auto mt-6 text-rose/75" size={18} />
+                )}
               </article>
             ))}
           </div>

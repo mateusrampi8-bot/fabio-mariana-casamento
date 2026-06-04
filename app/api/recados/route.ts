@@ -12,6 +12,7 @@ type GuestMessage = {
   name: string;
   relation: string;
   message: string;
+  signature?: string;
   createdAt: string;
 };
 
@@ -19,6 +20,7 @@ const RECADO_KEY = "fabio-mariana:recados";
 const MAX_NAME_LENGTH = 80;
 const MAX_RELATION_LENGTH = 80;
 const MAX_MESSAGE_LENGTH = 700;
+const MAX_SIGNATURE_LENGTH = 140000;
 
 function redisConfig() {
   const url = process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL;
@@ -34,6 +36,15 @@ function cleanText(value: unknown, maxLength: number) {
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, maxLength);
+}
+
+function cleanSignature(value: unknown) {
+  const signature = String(value ?? "").trim();
+
+  if (!signature) return "";
+  if (!signature.startsWith("data:image/png;base64,")) return "";
+
+  return signature.slice(0, MAX_SIGNATURE_LENGTH);
 }
 
 async function redisCommand<T>(command: unknown[]) {
@@ -95,16 +106,22 @@ export async function POST(request: Request) {
   const name = cleanText(body?.name, MAX_NAME_LENGTH);
   const relation = cleanText(body?.relation, MAX_RELATION_LENGTH);
   const message = cleanText(body?.message, MAX_MESSAGE_LENGTH);
+  const signature = cleanSignature(body?.signature);
 
-  if (!name || !message) {
-    return NextResponse.json({ error: "Nome e mensagem são obrigatórios." }, { status: 400 });
+  if (!message) {
+    return NextResponse.json({ error: "Mensagem obrigatória." }, { status: 400 });
+  }
+
+  if (!signature) {
+    return NextResponse.json({ error: "Assinatura obrigatória." }, { status: 400 });
   }
 
   const guestMessage: GuestMessage = {
     id: crypto.randomUUID(),
-    name,
+    name: name || "Assinatura manual",
     relation,
     message,
+    signature,
     createdAt: new Date().toISOString()
   };
 
