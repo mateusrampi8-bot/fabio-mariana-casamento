@@ -29,7 +29,8 @@ const storyPhotos = [
   },
   {
     src: "/images/optimized/casal/abf5af1e-19a6-4534-83fa-1badc6db0e60.jpg",
-    alt: "Fábio e Mariana no cartório"
+    alt: "Fábio e Mariana no cartório",
+    contain: true
   },
   {
     src: "/images/optimized/casal/WhatsApp%20Image%202026-06-02%20at%2013.05.08%20(3).jpg",
@@ -92,10 +93,15 @@ export default function NossaHistoria() {
   );
 }
 
-function PhotoCard({ photo, className = "" }: { photo: { src: string; alt: string }; className?: string }) {
+function PhotoCard({ photo, className = "" }: { photo: { src: string; alt: string; contain?: boolean }; className?: string }) {
   return (
     <figure className={`overflow-hidden rounded-lg bg-white p-2 shadow-soft ${className}`}>
-      <img src={photo.src} alt={photo.alt} loading="lazy" className="aspect-[0.82/1] w-full rounded-md object-cover" />
+      <img
+        src={photo.src}
+        alt={photo.alt}
+        loading="lazy"
+        className={`aspect-[0.82/1] w-full rounded-md ${photo.contain ? "bg-linen object-contain" : "object-cover"}`}
+      />
     </figure>
   );
 }
