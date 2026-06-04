@@ -22,6 +22,8 @@ const MAX_RELATION_LENGTH = 80;
 const MAX_MESSAGE_LENGTH = 700;
 const MAX_SIGNATURE_LENGTH = 140000;
 
+let fallbackMessages: GuestMessage[] = [];
+
 function redisConfig() {
   const url = process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.KV_REST_API_TOKEN;
@@ -75,7 +77,7 @@ async function redisCommand<T>(command: unknown[]) {
 
 export async function GET() {
   if (!redisConfig()) {
-    return NextResponse.json({ configured: false, messages: [] });
+    return NextResponse.json({ configured: true, messages: fallbackMessages });
   }
 
   const storedMessages = await redisCommand<string[]>(["LRANGE", RECADO_KEY, 0, 99]);
@@ -93,15 +95,6 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!redisConfig()) {
-    return NextResponse.json(
-      {
-        error: "O mural de recados ainda precisa das variáveis do Upstash Redis no Vercel."
-      },
-      { status: 503 }
-    );
-  }
-
   const body = (await request.json().catch(() => null)) as Partial<GuestMessage> | null;
   const name = cleanText(body?.name, MAX_NAME_LENGTH);
   const relation = cleanText(body?.relation, MAX_RELATION_LENGTH);
@@ -124,6 +117,11 @@ export async function POST(request: Request) {
     signature,
     createdAt: new Date().toISOString()
   };
+
+  if (!redisConfig()) {
+    fallbackMessages = [guestMessage, ...fallbackMessages].slice(0, 99);
+    return NextResponse.json({ message: guestMessage }, { status: 201 });
+  }
 
   await redisCommand<number>(["LPUSH", RECADO_KEY, JSON.stringify(guestMessage)]);
   await redisCommand<number>(["LTRIM", RECADO_KEY, 0, 99]);

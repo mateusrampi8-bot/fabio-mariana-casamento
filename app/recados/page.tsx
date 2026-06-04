@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { Heart, MessageCircle, PenLine } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Eraser, Heart, MessageCircle, PenLine, Send, X } from "lucide-react";
+import { FormEvent, PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from "react";
 import { PageHero, PageShell } from "../components";
 
 type GuestMessage = {
@@ -14,21 +13,185 @@ type GuestMessage = {
   createdAt: string;
 };
 
+const LOCAL_RECADO_KEY = "fabio-mariana-recados";
+
+function readLocalMessages() {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const stored = window.localStorage.getItem(LOCAL_RECADO_KEY);
+    return stored ? (JSON.parse(stored) as GuestMessage[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalMessages(messages: GuestMessage[]) {
+  try {
+    window.localStorage.setItem(LOCAL_RECADO_KEY, JSON.stringify(messages.slice(0, 99)));
+  } catch {
+    // Local backup is best-effort only.
+  }
+}
+
+function mergeMessages(primary: GuestMessage[], secondary: GuestMessage[]) {
+  const seen = new Set<string>();
+  return [...primary, ...secondary].filter((item) => {
+    if (seen.has(item.id)) return false;
+    seen.add(item.id);
+    return true;
+  });
+}
+
 export default function Recados() {
   const [messages, setMessages] = useState<GuestMessage[]>([]);
-  const [configured, setConfigured] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [hasSignature, setHasSignature] = useState(false);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    const localMessages = readLocalMessages();
+    setMessages(localMessages);
+
     fetch("/api/recados", { cache: "no-store" })
       .then((response) => response.json())
-      .then((payload: { configured?: boolean; messages?: GuestMessage[] }) => {
-        setConfigured(payload.configured !== false);
-        setMessages(payload.messages ?? []);
+      .then((payload: { messages?: GuestMessage[] }) => {
+        setMessages(mergeMessages(payload.messages ?? [], localMessages));
       })
-      .catch(() => setConfigured(false))
+      .catch(() => setMessages(localMessages))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!isFormOpen) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scale = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, Math.floor(rect.width * scale));
+    canvas.height = Math.max(1, Math.floor(rect.height * scale));
+
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    context.scale(scale, scale);
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    context.lineWidth = 3;
+    context.strokeStyle = "#10233F";
+  }, [isFormOpen]);
+
+  function getPoint(event: ReactPointerEvent<HTMLCanvasElement>) {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top
+    };
+  }
+
+  function startDrawing(event: ReactPointerEvent<HTMLCanvasElement>) {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (!canvas || !context) return;
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+    const point = getPoint(event);
+    context.beginPath();
+    context.moveTo(point.x, point.y);
+    setIsDrawing(true);
+    setHasSignature(true);
+  }
+
+  function draw(event: ReactPointerEvent<HTMLCanvasElement>) {
+    if (!isDrawing) return;
+
+    const context = canvasRef.current?.getContext("2d");
+    if (!context) return;
+
+    const point = getPoint(event);
+    context.lineTo(point.x, point.y);
+    context.stroke();
+  }
+
+  function stopDrawing() {
+    const context = canvasRef.current?.getContext("2d");
+    context?.closePath();
+    setIsDrawing(false);
+  }
+
+  function clearSignature() {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (!canvas || !context) return;
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    setHasSignature(false);
+  }
+
+  function closeForm() {
+    setIsFormOpen(false);
+    setStatus("idle");
+    setError("");
+    setMessage("");
+    setHasSignature(false);
+  }
+
+  async function submitMessage(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus("sending");
+    setError("");
+
+    const signature = canvasRef.current?.toDataURL("image/png") ?? "";
+
+    try {
+      const response = await fetch("/api/recados", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: "Assinatura manual",
+          relation: "",
+          message,
+          signature
+        })
+      });
+
+      const payload = (await response.json().catch(() => ({}))) as { error?: string; message?: GuestMessage };
+
+      if (!response.ok || !payload.message) {
+        throw new Error(payload.error ?? "Não foi possível enviar agora.");
+      }
+
+      const nextMessages = mergeMessages([payload.message], messages);
+      setMessages(nextMessages);
+      saveLocalMessages(nextMessages);
+      setStatus("sent");
+      closeForm();
+    } catch (caughtError) {
+      const fallbackMessage: GuestMessage = {
+        id: crypto.randomUUID(),
+        name: "Assinatura manual",
+        relation: "",
+        message,
+        signature,
+        createdAt: new Date().toISOString()
+      };
+      const nextMessages = mergeMessages([fallbackMessage], messages);
+      setMessages(nextMessages);
+      saveLocalMessages(nextMessages);
+      setStatus("sent");
+      closeForm();
+    }
+  }
 
   return (
     <PageShell>
@@ -41,20 +204,15 @@ export default function Recados() {
               <p className="font-script text-5xl text-champagne">Mural de carinho</p>
               <h2 className="mt-2 font-serif text-5xl font-semibold text-rose md:text-6xl">Recados dos convidados</h2>
             </div>
-            <Link
-              href="/deixar-recado"
+            <button
+              type="button"
+              onClick={() => setIsFormOpen(true)}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-champagne px-7 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-white shadow-gold transition hover:scale-[1.02]"
             >
               <PenLine size={16} />
-              Deixe seu recado
-            </Link>
+              Adicionar recado
+            </button>
           </div>
-
-          {!configured ? (
-            <div className="mb-8 rounded-lg border border-champagne/25 bg-white/75 p-5 text-sm leading-7 text-navy/70 shadow-soft">
-              O mural já está pronto, mas precisa conectar o armazenamento online no Vercel para receber novos recados.
-            </div>
-          ) : null}
 
           {loading ? <p className="text-center text-navy/60">Carregando recados...</p> : null}
 
@@ -63,7 +221,7 @@ export default function Recados() {
               <Heart className="mx-auto mb-4 text-champagne" size={24} />
               <p className="font-serif text-3xl text-rose">Ainda não há recados por aqui.</p>
               <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-navy/60">
-                Quando os convidados enviarem mensagens pelo link, elas aparecerão neste mural.
+                Clique em adicionar recado para deixar uma mensagem assinada à mão.
               </p>
             </div>
           ) : null}
@@ -91,6 +249,75 @@ export default function Recados() {
             ))}
           </div>
         </div>
+
+        {isFormOpen ? (
+          <div className="fixed inset-0 z-[80] overflow-y-auto bg-navy/55 px-5 py-10 backdrop-blur-sm">
+            <form
+              onSubmit={submitMessage}
+              className="relative mx-auto max-w-2xl rounded-lg border border-champagne/20 bg-white p-6 shadow-soft md:p-8"
+            >
+              <button
+                type="button"
+                onClick={closeForm}
+                aria-label="Fechar formulário de recado"
+                className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full border border-champagne/25 text-champagne"
+              >
+                <X size={18} />
+              </button>
+
+              <p className="font-script text-5xl text-champagne">Cartas para</p>
+              <h3 className="mt-1 pr-12 font-serif text-5xl font-semibold text-rose">Fábio & Mariana</h3>
+
+              <label className="mt-8 block">
+                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-champagne">Seu recado</span>
+                <textarea
+                  value={message}
+                  onChange={(event) => setMessage(event.target.value)}
+                  maxLength={700}
+                  required
+                  rows={7}
+                  className="mt-3 w-full resize-none rounded-md border border-rose/20 bg-white px-4 py-3 text-navy outline-none transition focus:border-champagne"
+                  placeholder="Deixe aqui seu carinho para Fábio & Mariana..."
+                />
+              </label>
+
+              <div className="mt-6">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-xs font-semibold uppercase tracking-[0.24em] text-champagne">Assine à mão</span>
+                  <button
+                    type="button"
+                    onClick={clearSignature}
+                    className="inline-flex items-center gap-2 rounded-full border border-rose/25 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-rose transition hover:border-rose"
+                  >
+                    <Eraser size={14} />
+                    Limpar
+                  </button>
+                </div>
+                <canvas
+                  ref={canvasRef}
+                  onPointerDown={startDrawing}
+                  onPointerMove={draw}
+                  onPointerUp={stopDrawing}
+                  onPointerLeave={stopDrawing}
+                  className="mt-3 h-44 w-full touch-none rounded-md border border-champagne/25 bg-[linear-gradient(180deg,#fff,#fffaf6)] shadow-inner outline-none"
+                  aria-label="Campo para assinar à mão livre"
+                />
+                <p className="mt-2 text-sm text-navy/45">Use o mouse, dedo ou caneta para fazer a assinatura.</p>
+              </div>
+
+              {status === "error" ? <p className="mt-4 text-sm text-rose">{error}</p> : null}
+
+              <button
+                type="submit"
+                disabled={status === "sending" || !message.trim() || !hasSignature}
+                className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-full bg-champagne px-7 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-white shadow-gold transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-55"
+              >
+                <Send size={16} />
+                {status === "sending" ? "Enviando" : "Enviar recado"}
+              </button>
+            </form>
+          </div>
+        ) : null}
       </section>
     </PageShell>
   );
