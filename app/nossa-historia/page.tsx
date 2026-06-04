@@ -28,9 +28,8 @@ const storyPhotos = [
     alt: "Fábio e Mariana sorrindo em meio à natureza"
   },
   {
-    src: "/images/optimized/casal/abf5af1e-19a6-4534-83fa-1badc6db0e60.jpg",
-    alt: "Fábio e Mariana no cartório",
-    contain: true
+    src: "/images/optimized/casal/c2558d6d-705c-4b28-9241-ed023a08f44c.jpg",
+    alt: "Selfie de Fábio e Mariana sorrindo"
   },
   {
     src: "/images/optimized/casal/WhatsApp%20Image%202026-06-02%20at%2013.05.08%20(3).jpg",
@@ -93,15 +92,10 @@ export default function NossaHistoria() {
   );
 }
 
-function PhotoCard({ photo, className = "" }: { photo: { src: string; alt: string; contain?: boolean }; className?: string }) {
+function PhotoCard({ photo, className = "" }: { photo: { src: string; alt: string }; className?: string }) {
   return (
     <figure className={`overflow-hidden rounded-lg bg-white p-2 shadow-soft ${className}`}>
-      <img
-        src={photo.src}
-        alt={photo.alt}
-        loading="lazy"
-        className={`aspect-[0.82/1] w-full rounded-md ${photo.contain ? "bg-linen object-contain" : "object-cover"}`}
-      />
+      <img src={photo.src} alt={photo.alt} loading="lazy" className="aspect-[0.82/1] w-full rounded-md object-cover" />
     </figure>
   );
 }
