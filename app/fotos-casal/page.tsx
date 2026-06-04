@@ -75,25 +75,54 @@ export default function FotosCasal() {
   const [currentSong, setCurrentSong] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioMissing, setAudioMissing] = useState(false);
+  const [needsGesture, setNeedsGesture] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
   const coupleAudio = playlist[currentSong];
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
   const featured = photos[27] ?? photos[0];
-  const collage = useMemo(
-    () => [photos[21], photos[22], photos[24], photos[23], photos[0], photos[25]].filter((photo): photo is string => Boolean(photo)),
+  const featureCards = useMemo(
+    () =>
+      [
+        { photo: photos[23], title: "Nosso primeiro passo" },
+        { photo: photos[0], title: "Noite inesquecível", featured: true },
+        { photo: photos[25], title: "O mundo lá fora pode esperar" }
+      ].filter((item): item is { photo: string; title: string; featured?: boolean } => Boolean(item.photo)),
     []
   );
-  const remaining = photos.filter((photo) => photo !== featured && !collage.includes(photo));
+  const remaining = photos.filter((photo) => photo !== featured && !featureCards.some((item) => item.photo === photo));
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.volume = 0.68;
+    audio
+      .play()
+      .then(() => {
+        setIsPlaying(true);
+        setNeedsGesture(false);
+      })
+      .catch(() => {
+        setIsPlaying(false);
+        setNeedsGesture(true);
+      });
+  }, []);
 
   useEffect(() => {
     if (!isPlaying) return;
 
     audioRef.current
       ?.play()
-      .then(() => setAudioMissing(false))
-      .catch(() => setIsPlaying(false));
+      .then(() => {
+        setAudioMissing(false);
+        setNeedsGesture(false);
+      })
+      .catch(() => {
+        setIsPlaying(false);
+        setNeedsGesture(true);
+      });
   }, [currentSong, isPlaying]);
 
   function nextSong() {
@@ -112,8 +141,14 @@ export default function FotosCasal() {
 
     audio
       .play()
-      .then(() => setIsPlaying(true))
-      .catch(() => setIsPlaying(false));
+      .then(() => {
+        setIsPlaying(true);
+        setNeedsGesture(false);
+      })
+      .catch(() => {
+        setIsPlaying(false);
+        setNeedsGesture(true);
+      });
   }
 
   return (
@@ -122,6 +157,7 @@ export default function FotosCasal() {
       <audio
         ref={audioRef}
         src={coupleAudio}
+        autoPlay
         preload="metadata"
         onEnded={nextSong}
         onError={() => setAudioMissing(true)}
@@ -130,12 +166,20 @@ export default function FotosCasal() {
       />
 
       <section className="relative min-h-screen px-5 pb-16 pt-24 md:px-8">
-        <div className="absolute inset-0 opacity-[0.13]">
+        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(212,175,55,0.12)_0_1px,transparent_1px_42px),linear-gradient(25deg,rgba(201,112,122,0.10)_0_1px,transparent_1px_54px)]" />
+        <div className="absolute inset-0 opacity-[0.16]">
           <img src={photos[0]} alt="" className="h-full w-full object-cover object-center" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#fbf6ee]/85 via-[#fbf6ee]/92 to-[#fbf6ee]" />
-        <div className="pointer-events-none absolute -left-16 top-36 hidden h-[31rem] w-52 rotate-[-12deg] rounded-[55%] border border-rose/15 bg-[radial-gradient(circle_at_42%_22%,#f3c4ca_0_9%,transparent_10%),radial-gradient(circle_at_58%_38%,#f6d9d2_0_10%,transparent_11%),linear-gradient(120deg,transparent,#d4af37_52%,transparent_54%)] opacity-70 md:block" />
-        <div className="pointer-events-none absolute -right-16 top-44 hidden h-[33rem] w-52 rotate-12 rounded-[55%] border border-rose/15 bg-[radial-gradient(circle_at_48%_24%,#f2c4cc_0_10%,transparent_11%),radial-gradient(circle_at_36%_48%,#f7ded6_0_10%,transparent_11%),linear-gradient(65deg,transparent,#d4af37_48%,transparent_50%)] opacity-70 md:block" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(251,246,238,0.84),rgba(251,246,238,0.94)_46%,#fbf6ee),radial-gradient(ellipse_at_top,rgba(255,255,255,0.78),transparent_58%)]" />
+        <div className="pointer-events-none absolute left-0 right-0 top-24 h-px bg-gradient-to-r from-transparent via-champagne/45 to-transparent" />
+        <div className="pointer-events-none absolute left-0 top-36 hidden h-[31rem] w-48 -translate-x-14 rotate-[-10deg] border-y border-champagne/20 bg-white/35 shadow-soft backdrop-blur-sm lg:block">
+          <img src={photos[22]} alt="" className="h-full w-full object-cover opacity-35" />
+        </div>
+        <div className="pointer-events-none absolute right-0 top-44 hidden h-[32rem] w-48 translate-x-14 rotate-[10deg] border-y border-champagne/20 bg-white/35 shadow-soft backdrop-blur-sm lg:block">
+          <img src={photos[25]} alt="" className="h-full w-full object-cover opacity-35" />
+        </div>
+        <div className="pointer-events-none absolute -left-16 top-36 hidden h-[31rem] w-52 rotate-[-12deg] rounded-[55%] border border-rose/15 bg-[radial-gradient(circle_at_42%_22%,#f3c4ca_0_9%,transparent_10%),radial-gradient(circle_at_58%_38%,#f6d9d2_0_10%,transparent_11%),linear-gradient(120deg,transparent,#d4af37_52%,transparent_54%)] opacity-55 md:block" />
+        <div className="pointer-events-none absolute -right-16 top-44 hidden h-[33rem] w-52 rotate-12 rounded-[55%] border border-rose/15 bg-[radial-gradient(circle_at_48%_24%,#f2c4cc_0_10%,transparent_11%),radial-gradient(circle_at_36%_48%,#f7ded6_0_10%,transparent_11%),linear-gradient(65deg,transparent,#d4af37_48%,transparent_50%)] opacity-55 md:block" />
 
         <div className="relative mx-auto max-w-[1320px]">
           <header className="mx-auto max-w-4xl text-center">
@@ -161,7 +205,9 @@ export default function FotosCasal() {
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-champagne">Player do casal</p>
-                    <p className="truncate font-serif text-xl text-navy md:text-2xl">{audioMissing ? "Preparando a trilha" : "Uma música para nós dois"}</p>
+                    <p className="truncate font-serif text-xl text-navy md:text-2xl">
+                      {audioMissing ? "Preparando a trilha" : needsGesture ? "Toque para ouvir nossa trilha" : "Uma música para nós dois"}
+                    </p>
                   </div>
                   <Volume2 className="shrink-0 text-rose" size={18} />
                 </div>
@@ -196,26 +242,34 @@ export default function FotosCasal() {
       </section>
 
       <section className="relative bg-[#fbf6ee] px-5 pb-20 md:px-8">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(212,175,55,0.09)_0_1px,transparent_1px_72px),linear-gradient(180deg,rgba(255,255,255,0.55),transparent_18rem)]" />
         <div className="pointer-events-none absolute left-0 right-0 top-0 h-10 bg-[linear-gradient(180deg,rgba(16,35,63,0.08),transparent)] opacity-30" />
-        <div className="mx-auto max-w-[1320px]">
-          <div className="relative grid gap-4 md:grid-cols-3">
-            {collage.map((photo, index) => (
+        <div className="relative mx-auto max-w-[1320px]">
+          <div className="relative grid items-center gap-5 lg:grid-cols-[0.95fr_1.12fr_0.95fr]">
+            {featureCards.map((item, index) => (
               <button
-                key={photo}
+                key={item.photo}
                 type="button"
-                onClick={() => setSelectedPhoto(photo)}
+                onClick={() => setSelectedPhoto(item.photo)}
                 aria-label="Abrir foto do casal"
-                className={`overflow-hidden rounded-lg bg-white p-2 shadow-soft transition hover:scale-[1.012] ${
-                  index === 4 ? "md:rotate-[-2deg]" : ""
+                className={`overflow-hidden rounded-lg bg-white p-3 shadow-soft transition hover:scale-[1.012] ${
+                  item.featured ? "lg:-translate-y-8 lg:scale-105" : index === 0 ? "lg:rotate-[-1deg]" : "lg:rotate-[1deg]"
                 }`}
               >
                 <img
-                  src={photo}
+                  src={item.photo}
                   alt="Foto do casal"
-                  loading={index < 3 ? "eager" : "lazy"}
-                  className={`w-full rounded-md object-cover ${index === 4 ? "aspect-[0.9/1]" : "aspect-[1.18/1]"}`}
+                  loading="eager"
+                  className={`w-full rounded-md object-cover ${item.featured ? "aspect-[0.95/1]" : "aspect-[1.12/1]"}`}
                 />
-                {index === 4 ? <span className="block py-4 text-center font-script text-2xl text-rose">Noite inesquecível</span> : null}
+                <span className={`block text-center font-serif text-champagne ${item.featured ? "px-4 py-7 text-4xl" : "px-3 py-5 text-3xl"}`}>
+                  {item.title}
+                </span>
+                <span className="mx-auto mb-2 flex max-w-40 items-center justify-center gap-4 text-champagne">
+                  <span className="h-px flex-1 bg-champagne/50" />
+                  <Heart size={18} />
+                  <span className="h-px flex-1 bg-champagne/50" />
+                </span>
               </button>
             ))}
           </div>

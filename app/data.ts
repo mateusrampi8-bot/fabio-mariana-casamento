@@ -15,9 +15,7 @@ export const pages = [
   { label: "Mariana", href: "/mariana" },
   { label: "Fábio", href: "/fabio" },
   { label: "História", href: "/nossa-historia" },
-  { label: "Fotos Casal", href: "/fotos-casal" },
-  { label: "Recados", href: "/recados" },
-  { label: "Detalhes", href: "/detalhes" }
+  { label: "Fotos Casal", href: "/fotos-casal" }
 ];
 
 export const galleryImages = [
